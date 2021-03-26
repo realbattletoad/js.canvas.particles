@@ -1,6 +1,8 @@
 import Particle from "./particle.js";
 import Mouse from "./mouse.js";
 import Keyboard from "./keyboard.js";
+import Collision from "./collision.js";
+import Config from "./config.js";
 
 export default class Scene {
     constructor(c) {
@@ -8,6 +10,8 @@ export default class Scene {
         this.ctx = c.ctx
         this.mouse = new Mouse(c)
         this.keyboard = new Keyboard()
+        this.config = new Config()
+        this.collision = new Collision()
         this.particleArray = []
     }
 
@@ -44,8 +48,11 @@ export default class Scene {
 
         this.particleArray.map((p) => {
             p.setUpdateCallbacks((e) => {
-                this.mouse.addGravity(e)
+                if (this.config.mouseGravity) {
+                    this.mouse.addGravity(e)
+                }
                 this.keyboard.addGravity(e)
+                //this.config.addCollision(this.particleArray)
             });
         })
     }
@@ -57,6 +64,11 @@ export default class Scene {
             p.update()
         })
 
-        this.connect();
+        if (this.config.drawLines) {
+            this.connect()
+        }
+        if (this.config.collision) {
+            this.collision.addCollision(this.particleArray)
+        }
     }
 }

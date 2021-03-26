@@ -3,12 +3,12 @@ export default class Particle {
         this.canvasNode = c.canvas;
         this.ctx = c.ctx;
         this.size = size || (Math.random() * 20) + 1;
-        this.x = x || (Math.random() * ((innerWidth - this.size * 2) - (this.size * 2)) + this.size * 2);
-        this.y = y || (Math.random() * ((innerHeight - this.size * 2) - (this.size * 2)) + this.size * 2);
+        this.x = Math.round(x || (Math.random() * ((innerWidth - this.size * 2) - (this.size * 2)) + this.size * 2));
+        this.y = Math.round(y || (Math.random() * ((innerHeight - this.size * 2) - (this.size * 2)) + this.size * 2));
         this.directionX = directionX || (Math.random() * 2) - 1;
         this.directionY = directionY || (Math.random() * 2) - 1;
 
-        this.color = color || 'gold';
+        this.color = color || 'hsla(' + Math.random() * 360 + ', 60%, 60%,' + Math.random() * 20 + ')'
         this.speedX = this.directionX;
         this.speedY = this.directionY;
 
@@ -18,6 +18,9 @@ export default class Particle {
     draw() {
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+
+        //let cId = (this.directionX*this.directionX + this.directionY*this.directionY)*300 +60;
+        //this.color =  'hsla(' + cId + ', 60%, 60%, 0.9)';
 
         this.ctx.fillStyle = this.color;
         this.ctx.fill();
@@ -46,7 +49,7 @@ export default class Particle {
 
     setUpdateCallbacks(updateCallback) {
         //if (typeof this.updateCallback === 'function') {
-            this.updateCallbacks.push(updateCallback)
+        this.updateCallbacks.push(updateCallback)
         //}
     }
 }
